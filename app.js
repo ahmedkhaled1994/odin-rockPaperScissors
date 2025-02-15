@@ -12,61 +12,80 @@ function getHumanChoice () {
     return humanChoice;
 }
 
-function playRound(humanChoice, computerChoice)
-{
-    humanChoice = humanChoice.toLowerCase();
-    computerChoice = computerChoice.toLowerCase();
-
-    console.log('Human choice: ' + humanChoice, 'and computer choice: ' + computerChoice);
+function getRoundResult(humanChoice, computerChoice) {
+    let result = '';
     if (humanChoice === computerChoice) {
-        return 'It\'s a tie!';
+        result = 'It\'s a tie!';
     }
     else if (humanChoice === 'rock') {
         if (computerChoice === 'paper') {
             computerScore++;
-            return 'Computer wins!';
+            result = 'Computer wins!';
         } else {
             humanScore++;
-            return 'Human wins!';
+            result = 'Human wins!';
         }
     }
     else if (humanChoice === 'paper') {
         if (computerChoice === 'scissors') {
             computerScore++;
-            return 'Computer wins!';
+            result = 'Computer wins!';
         } else {
             humanScore++;
-            return 'Human wins!';
+            result = 'Human wins!';
         }
     }
     else if (humanChoice === 'scissors') {
         if (computerChoice === 'rock') {
             computerScore++;
-            return 'Computer wins!';
+            result = 'Computer wins!';
         } else {
             humanScore++;
-            return 'Human wins!';
+            result = 'Human wins!';
         }
     }
     else {
-        return 'Invalid choice!';
+        result = 'Invalid choice!';
     }
+    return result
 }
 
-function playGame() {
-    for (let i = 0; i < 5; i++) {
-        const computerChoice = getComputerChoice();
-        const humanChoice = getHumanChoice();
-        console.log(playRound(humanChoice, computerChoice));
-    }
+function getGameResult() {
+    let gameResult = '';
 
-    if (humanScore > computerScore) {
-        return 'Human wins the game!';
-    } else if (humanScore < computerScore) {
-        return 'Computer wins the game!';
-    } else {
-        return 'The Game is a tie!';
+    if (humanScore === 5 || computerScore === 5) {
+        gameResult = 
+            (humanScore > computerScore) ? 
+            'Human wins the game!' : 
+            'Computer wins the game!';
+        humanScore = 0;
+        computerScore = 0;
     }
+    return gameResult;
 }
 
-console.log(playGame());
+function playRound(humanChoice)
+{
+
+    let computerChoice = getComputerChoice();
+
+    humanChoice = humanChoice.toLowerCase();
+    computerChoice = computerChoice.toLowerCase();
+
+    const selectionstDiv = document.getElementById('selections');
+    const roundResultDiv = document.getElementById('roundResult');
+    const scoreDiv = document.getElementById('score');
+    const gameResultDiv = document.getElementById('gameResult');
+
+    selectionstDiv.innerHTML = 'Human choice: ' + humanChoice 
+    + ', Computer choice: ' + computerChoice;
+    
+    let roundResult = getRoundResult(humanChoice, computerChoice);
+
+    roundResultDiv.innerHTML = roundResult.result;
+    scoreDiv.innerHTML = 'Human: ' + humanScore + ', Computer: ' + computerScore;
+
+        
+    let gameResult = getGameResult(humanScore, computerScore);
+    gameResultDiv.innerHTML = gameResult;
+}
